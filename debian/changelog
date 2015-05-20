@@ -1,3 +1,9 @@
+ev3-systemd (2) stable; urgency=medium
+
+  * [bluetooth] make sure hciattach is complete before bluetooth.service
+
+ -- David Lechner <david@lechnology.com>  Wed, 20 May 2015 18:44:26 -0500
+
 ev3-systemd (1) stable; urgency=medium
 
   * Initial release.
