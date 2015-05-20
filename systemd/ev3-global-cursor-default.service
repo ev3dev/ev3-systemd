@@ -1,0 +1,16 @@
+# This file is part of the ev3-systemd package
+
+# change global cursor default to on. It is disabled in the kernel so that it
+# does not show up the boot splash screen.
+
+[Unit]
+Description=Turn on global VT cursor
+Before=getty@tty1.service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c '/bin/echo -n -e "\033[?25h" > /dev/tty0; \
+    /bin/echo 1 > /sys/module/vt/parameters/global_cursor_default'
+
+[Install]
+WantedBy=getty.target

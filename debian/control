@@ -1,0 +1,21 @@
+Source: ev3-systemd
+Priority: optional
+Maintainer: David Lechner <david@lechnology.com>
+Build-Depends: debhelper (>= 8.0.0), dh-systemd (>= 1.5)
+Standards-Version: 3.9.5
+Section: embedded
+Homepage: http://www.ev3dev.org
+Vcs-Git: git://github.com/ev3dev/ev3-systemd.git
+Vcs-Browser: https://github.com/ev3dev/ev3-systemd
+
+Package: ev3-systemd
+Section: embedded
+Architecture: armel
+Depends: bluez (>= 5), bsdmainutils, kbd | console-tools, fonts-tom-thumb,
+    ev3dev-rules, ${misc:Depends}
+Replaces: ev3dev-bluetooth, ev3dev-console, ev3dev-gadget, ev3dev-i2c,
+    ev3dev-leds, ev3dev-ports, ev3dev-uart
+Breaks: ev3dev-bluetooth, ev3dev-console, ev3dev-gadget, ev3dev-i2c,
+    ev3dev-leds, ev3dev-ports, ev3dev-uart
+Description: Systemd unit files and udev rules for LEGO MINDSTORMS EV3.
+ This package is only useful for LEGO MINDSTORMS EV3 running an ev3dev kernel.

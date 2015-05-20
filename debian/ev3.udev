@@ -1,0 +1,22 @@
+# This file is part of the ev3-systemd package
+
+# LEGO MINDSTORMS EV3 built-in bluetooth
+KERNEL=="legoev3-bluetooth", ACTION=="add", TAG+="systemd", \
+    ENV{SYSTEMD_WANTS}="ev3-bluetooth.service"
+
+# Create symlink for I2C adapters to match EV3 input ports
+KERNEL=="i2c-3", SYMLINK+="i2c-ev3:in1"
+KERNEL=="i2c-4", SYMLINK+="i2c-ev3:in2"
+KERNEL=="i2c-5", SYMLINK+="i2c-ev3:in3"
+KERNEL=="i2c-6", SYMLINK+="i2c-ev3:in4"
+
+# Create symlink for serial ports to match EV3 input ports
+KERNEL=="ttyS1", SYMLINK+="tty_ev3:in1"
+KERNEL=="ttyS0", SYMLINK+="tty_ev3:in2"
+KERNEL=="ttySU1", SYMLINK+="tty_ev3:in3"
+KERNEL=="ttySU0", SYMLINK+="tty_ev3:in4"
+
+# start EV3 UART sensor line discipline when UART sensor is connected
+SUBSYSTEMS=="lego", ENV{DEVTYPE}=="ev3-uart-host", ACTION=="add", TAG+="systemd", \
+    ENV{SYSTEMD_WANTS}="ev3-uart@$env{LEGO_PORT_NAME}.service", \
+    ENV{SYSTEMD_ALIAS}="/sys/subsystem/lego/devices/ev3_uart_host_$env{LEGO_PORT_NAME}"

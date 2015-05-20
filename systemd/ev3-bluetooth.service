@@ -1,0 +1,15 @@
+[Unit]
+Description=LEGO MINDSTORMS EV3 Bluetooth
+# TODO: This binding does not actually do anything useful. What we really want
+# to do is kill hciattach when the enable attribute of this device is set to 0.
+BindsTo=sys-devices-platform-legoev3\x2dbluetooth.device
+# If either of these starts before hciattach is complete, hciattach could fail
+# because of rfkill.
+Before=connman.service systemd-rfkill@rfkill0.service
+
+[Service]
+Type=forking
+# This can fail due to timeout during boot because the system is so busy.
+# We give it a long timeout and use nice to try to keep if from failing.
+ExecStart=/usr/bin/hciattach -t 30 /dev/ttyS2 texas 2000000 noflow nosleep
+Nice=-10

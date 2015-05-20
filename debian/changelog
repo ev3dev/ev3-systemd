@@ -1,0 +1,5 @@
+ev3-systemd (1) stable; urgency=medium
+
+  * Initial release.
+
+ -- David Lechner <david@lechnology.com>  Wed, 20 May 2015 15:57:54 -0500
