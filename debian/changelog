@@ -1,3 +1,9 @@
+ev3-systemd (3) stable; urgency=medium
+
+  * Fix UART sensors not working.
+
+ -- David Lechner <david@lechnology.com>  Thu, 21 May 2015 10:53:51 -0500
+
 ev3-systemd (2) stable; urgency=medium
 
   * [bluetooth] make sure hciattach is complete before bluetooth.service
