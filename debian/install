@@ -1,1 +1,2 @@
 systemd/* /lib/systemd/system
+scripts/* /usr/share/ev3-systemd

@@ -15,9 +15,7 @@
 override_dh_installudev:
 	dh_installudev --name=ev3
 
-override_dh_systemd_enable:
-	dh_systemd_enable -pev3-gadget --no-enable
-	dh_systemd_enable --remaining-packages
-
 override_dh_systemd_start:
+	# Restarting could cause us to lose network connection, which would kill
+	# the upgrade if it was running from a remote terminal.
 	dh_systemd_start --no-start --no-restart-on-upgrade

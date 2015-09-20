@@ -1,0 +1,15 @@
+# This file is part of the ev3-systemd package
+
+[Unit]
+Description=USB Gadget for LEGO MINDSTORMS EV3 hardware
+Before=network.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStartPre=/sbin/modprobe libcomposite
+ExecStart=/usr/share/ev3-systemd/ev3-usb.sh up
+ExecStop=/usr/share/ev3-systemd/ev3-usb.sh down
+
+[Install]
+WantedBy=network.target
