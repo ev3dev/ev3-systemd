@@ -1,2 +1,3 @@
-systemd/* /lib/systemd/system
+modules/* /lib/modules-load.d
 scripts/* /usr/share/ev3-systemd
+systemd/* /lib/systemd/system
