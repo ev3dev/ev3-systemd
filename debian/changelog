@@ -1,3 +1,10 @@
+ev3-systemd (4) stable; urgency=medium
+
+  * Replace rndis-gadget.service and cdc-gadget.service with ev3-usb.service
+  * Load uinput module at boot and give permission to input group.
+
+ -- David Lechner <david@lechnology.com>  Sat, 19 Sep 2015 22:12:27 -0500
+
 ev3-systemd (3) stable; urgency=medium
 
   * Fix UART sensors not working.
