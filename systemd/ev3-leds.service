@@ -8,19 +8,19 @@ WantedBy=multi-user.target
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/bin/sh -c 'echo none > "/sys/class/leds/ev3-right0:red:ev3dev/trigger";     \
-                      echo none > "/sys/class/leds/ev3-left0:red:ev3dev/trigger";      \
-                      echo none > "/sys/class/leds/ev3-right1:green:ev3dev/trigger";   \
-                      echo none > "/sys/class/leds/ev3-left1:green:ev3dev/trigger";    \
-                      echo 0 > "/sys/class/leds/ev3-right0:red:ev3dev/brightness";     \
-                      echo 0 > "/sys/class/leds/ev3-left0:red:ev3dev/brightness";      \
-                      echo 255 > "/sys/class/leds/ev3-right1:green:ev3dev/brightness"; \
-                      echo 255 > "/sys/class/leds/ev3-left1:green:ev3dev/brightness"'
-ExecStop=/bin/sh -c 'echo none > "/sys/class/leds/ev3-right0:red:ev3dev/trigger";   \
-                     echo none > "/sys/class/leds/ev3-left0:red:ev3dev/trigger";    \
-                     echo none > "/sys/class/leds/ev3-right1:green:ev3dev/trigger"; \
-                     echo none > "/sys/class/leds/ev3-left1:green:ev3dev/trigger";  \
-                     echo 255 > "/sys/class/leds/ev3-right0:red:ev3dev/brightness"; \
-                     echo 255 > "/sys/class/leds/ev3-left0:red:ev3dev/brightness";  \
-                     echo 0 > "/sys/class/leds/ev3-right1:green:ev3dev/brightness"; \
-                     echo 0 > "/sys/class/leds/ev3-left1:green:ev3dev/brightness"'
+ExecStart=/bin/sh -c 'echo none > "/sys/class/leds/ev3:right:red:ev3dev/trigger";     \
+                      echo none > "/sys/class/leds/ev3:left:red:ev3dev/trigger";      \
+                      echo none > "/sys/class/leds/ev3:right:green:ev3dev/trigger";   \
+                      echo none > "/sys/class/leds/ev3:left:green:ev3dev/trigger";    \
+                      echo 0 > "/sys/class/leds/ev3:right:red:ev3dev/brightness";     \
+                      echo 0 > "/sys/class/leds/ev3:left:red:ev3dev/brightness";      \
+                      echo 255 > "/sys/class/leds/ev3:right:green:ev3dev/brightness"; \
+                      echo 255 > "/sys/class/leds/ev3:left:green:ev3dev/brightness"'
+ExecStop=/bin/sh -c 'echo none > "/sys/class/leds/ev3:right:red:ev3dev/trigger";   \
+                     echo none > "/sys/class/leds/ev3:left:red:ev3dev/trigger";    \
+                     echo none > "/sys/class/leds/ev3:right:green:ev3dev/trigger"; \
+                     echo none > "/sys/class/leds/ev3:left:green:ev3dev/trigger";  \
+                     echo 255 > "/sys/class/leds/ev3:right:red:ev3dev/brightness"; \
+                     echo 255 > "/sys/class/leds/ev3:left:red:ev3dev/brightness";  \
+                     echo 0 > "/sys/class/leds/ev3:right:green:ev3dev/brightness"; \
+                     echo 0 > "/sys/class/leds/ev3:left:green:ev3dev/brightness"'
