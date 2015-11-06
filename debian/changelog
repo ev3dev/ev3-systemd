@@ -1,3 +1,9 @@
+ev3-systemd (5.0.0) stable; urgency=medium
+
+  * Update LED names for kernel change.
+
+ -- David Lechner <david@lechnology.com>  Fri, 06 Nov 2015 11:16:02 -0600
+
 ev3-systemd (4.0.1) stable; urgency=medium
 
   * Start libcomposite via modules-load instead of in ev3-usb.service.
