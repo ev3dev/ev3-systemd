@@ -30,7 +30,7 @@ ev3_usb_up() {
     mfg="LEGO Group" # matches LEGO firmware
     prod="EV3+ev3dev" # LEGO firmware is just "EV3"
     # Read bluetooth mac address from eeprom - this is what LEGO firmware uses for serial
-    serial="$(hexdump -s 0x3f06 -n 6 -e '/1 "%02x"' /sys/bus/i2c/devices/1-0050/eeprom)"
+    serial="$(grep Serial /proc/cpuinfo | sed 's/Serial\s*: 0000\(\w*\)/\1/')"
     attr="0xC0" # Self powered
     pwr="1" # 2mA
     cfg1="RNDIS"
