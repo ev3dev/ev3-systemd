@@ -11,7 +11,7 @@ Vcs-Browser: https://github.com/ev3dev/ev3-systemd
 Package: ev3-systemd
 Section: embedded
 Architecture: armel
-Depends: bluez (>= 5), bsdmainutils, kbd | console-tools, fonts-tom-thumb,
+Depends: bluez (>= 5), kbd | console-tools, fonts-tom-thumb,
     ev3dev-rules, ${misc:Depends}
 Replaces: ev3dev-bluetooth, ev3dev-console, ev3dev-gadget, ev3dev-i2c,
     ev3dev-leds, ev3dev-ports, ev3dev-uart
