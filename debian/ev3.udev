@@ -18,8 +18,8 @@ KERNEL=="ttySU0", SYMLINK+="tty_in4"
 
 # Start EV3 UART sensor line discipline when UART sensor is connected
 SUBSYSTEMS=="lego", ENV{DEVTYPE}=="ev3-uart-host", ACTION=="add", TAG+="systemd", \
-    ENV{SYSTEMD_WANTS}="ev3-uart@$env{LEGO_PORT_NAME}.service", \
-    ENV{SYSTEMD_ALIAS}="/sys/subsystem/lego/devices/ev3_uart_host_$env{LEGO_PORT_NAME}"
+    ENV{SYSTEMD_WANTS}="ev3-uart@$env{LEGO_ADDRESS}.service", \
+    ENV{SYSTEMD_ALIAS}="/sys/subsystem/lego/devices/ev3_uart_host_$env{LEGO_ADDRESS}"
 
 # Give permission for uinput to input group
 KERNEL=="uinput", GROUP="input"
