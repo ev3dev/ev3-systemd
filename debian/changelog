@@ -1,3 +1,11 @@
+ev3-systemd (5.1.0) stable; urgency=medium
+
+  * Read serial from /proc/cpuinfo instead of from eeprom.
+  * Remove dependency on bsdadmintools.
+  * Rename LEGO_PORT_NAME to LEGO_ADDRESS in udev rules.
+
+ -- David Lechner <david@lechnology.com>  Sun, 20 Dec 2015 13:38:12 -0600
+
 ev3-systemd (5.0.0) stable; urgency=medium
 
   * Update LED names for kernel change.
