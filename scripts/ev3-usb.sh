@@ -50,6 +50,14 @@ ev3_usb_up() {
     ms_compat_id="RNDIS" # matches Windows RNDIS Drivers
     ms_subcompat_id="5162001" # matches Windows RNDIS 6.0 Driver
 
+
+    tmpdir=$(mktemp -d)
+    mount /dev/mmcblk0p1 $tmpdir
+    if [ -f $tmpdir/ev3dev.txt ]; then
+        cdc_only=$(grep -i "^cdc_only=\(true\|yes\|1\)" $tmpdir/ev3dev.txt | cut -b 10-)
+    fi
+    umount $tmpdir
+
     if [ -d ${g} ]; then
         if [ "$(cat ${g}/UDC)" != "" ]; then
             echo "Gadget is already up."
@@ -76,33 +84,45 @@ ev3_usb_up() {
     # Windows to be first. The second will be CDC. Linux and Mac are smart
     # enough to ignore RNDIS and load the CDC configuration.
 
-    mkdir ${g}/configs/c.1
-    echo "${attr}" > ${g}/configs/c.1/bmAttributes
-    echo "${pwr}" > ${g}/configs/c.1/MaxPower
-    mkdir ${g}/configs/c.1/strings/0x409
-    echo "${cfg1}" > ${g}/configs/c.1/strings/0x409/configuration
+    # There is a bug in OS X 10.11 that makes Mac no longer smart enough to
+    # use the second configuration. So we've added the cdc_only check to
+    # work around this.
+
+    if [ -z $cdc_only ]; then
+
+        # config 1 is for RNDIS
+
+        mkdir ${g}/configs/c.1
+        echo "${attr}" > ${g}/configs/c.1/bmAttributes
+        echo "${pwr}" > ${g}/configs/c.1/MaxPower
+        mkdir ${g}/configs/c.1/strings/0x409
+        echo "${cfg1}" > ${g}/configs/c.1/strings/0x409/configuration
+
+        # On Windows 7 and later, the RNDIS 5.1 driver would be used by default,
+        # but it does not work very well. The RNDIS 6.0 driver works better. In
+        # order to get this driver to load automatically, we have to use a
+        # Microsoft-specific extension of USB.
+
+        echo "1" > ${g}/os_desc/use
+        echo "${ms_vendor_code}" > ${g}/os_desc/b_vendor_code
+        echo "${ms_qw_sign}" > ${g}/os_desc/qw_sign
+
+        # Create the RNDIS function, including the Microsoft-specific bits
+
+        mkdir ${g}/functions/rndis.usb0
+        echo "${dev_mac1}" > ${g}/functions/rndis.usb0/dev_addr
+        echo "${host_mac1}" > ${g}/functions/rndis.usb0/host_addr
+        echo "${ms_compat_id}" > ${g}/functions/rndis.usb0/os_desc/interface.rndis/compatible_id
+        echo "${ms_subcompat_id}" > ${g}/functions/rndis.usb0/os_desc/interface.rndis/sub_compatible_id
+    fi
+
+    # config 2 is for CDC
+
     mkdir ${g}/configs/c.2
     echo "${attr}" > ${g}/configs/c.2/bmAttributes
     echo "${pwr}" > ${g}/configs/c.2/MaxPower
     mkdir ${g}/configs/c.2/strings/0x409
     echo "${cfg2}" > ${g}/configs/c.2/strings/0x409/configuration
-
-    # On Windows 7 and later, the RNDIS 5.1 driver would be used by default,
-    # but it does not work very well. The RNDIS 6.0 driver works better. In
-    # order to get this driver to load automatically, we have to use a
-    # Microsoft-specific extension of USB.
-
-    echo "1" > ${g}/os_desc/use
-    echo "${ms_vendor_code}" > ${g}/os_desc/b_vendor_code
-    echo "${ms_qw_sign}" > ${g}/os_desc/qw_sign
-
-    # Create the RNDIS function, including the Microsoft-specific bits
-
-    mkdir ${g}/functions/rndis.usb0
-    echo "${dev_mac1}" > ${g}/functions/rndis.usb0/dev_addr
-    echo "${host_mac1}" > ${g}/functions/rndis.usb0/host_addr
-    echo "${ms_compat_id}" > ${g}/functions/rndis.usb0/os_desc/interface.rndis/compatible_id
-    echo "${ms_subcompat_id}" > ${g}/functions/rndis.usb0/os_desc/interface.rndis/sub_compatible_id
 
     # Create the CDC function
 
@@ -112,9 +132,11 @@ ev3_usb_up() {
 
     # Link everything up and bind the USB device
 
-    ln -s ${g}/functions/rndis.usb0 ${g}/configs/c.1
+    if [ -z $cdc_only ]; then
+        ln -s ${g}/functions/rndis.usb0 ${g}/configs/c.1
+        ln -s ${g}/configs/c.1 ${g}/os_desc
+    fi
     ln -s ${g}/functions/ecm.usb0 ${g}/configs/c.2
-    ln -s ${g}/configs/c.1 ${g}/os_desc
     echo "${device}" > ${g}/UDC
 
     echo "Done."
