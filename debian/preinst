@@ -3,7 +3,7 @@
 set -e
 
 # insert modules so user doesn't have to reboot
-modprobe libcomposite
-modprobe uinput
+modprobe libcomposite || true
+modprobe uinput || true
 
 #DEBHELPER#
