@@ -1,3 +1,9 @@
+ev3-systemd (5.2.2) stable; urgency=medium
+
+  * Flow control seems to work again in 4.4 kernel
+
+ -- David Lechner <david@lechnology.com>  Tue, 14 Jun 2016 16:04:44 -0500
+
 ev3-systemd (5.2.1) stable; urgency=medium
 
   * It is OK if modprobe fails in preinst
