@@ -1,3 +1,9 @@
+ev3-systemd (5.2.1) stable; urgency=medium
+
+  * It is OK if modprobe fails in preinst
+
+ -- David Lechner <david@lechnology.com>  Tue, 14 Jun 2016 15:38:11 -0500
+
 ev3-systemd (5.2.0) stable; urgency=medium
 
   * [ev3-usb] Add workaround for OS X 10.11
