@@ -2,7 +2,7 @@
 
 # USB Gadget for LEGO MINDSTORMS EV3 hardware
 #
-# Copyright (C) 2015 David Lechner <david@lechnology.com>
+# Copyright (C) 2015,2017 David Lechner <david@lechnology.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -33,18 +33,18 @@ ev3_usb_up() {
     serial="$(grep Serial /proc/cpuinfo | sed 's/Serial\s*: 0000\(\w*\)/\1/')"
     attr="0xC0" # Self powered
     pwr="1" # 2mA
-    cfg1="RNDIS"
-    cfg2="CDC"
+    cfg1="CDC"
+    cfg2="RNDIS"
     # add colons for MAC address format
     mac="$(echo ${serial} | sed 's/\(\w\w\)/:\1/g' | cut -b 2-)"
     # Change the first number for each MAC address - the second digit of 2 indicates
     # that these are "locally assigned (b2=1), unicast (b1=0)" addresses. This is
     # so that they don't conflict with any existing vendors. Care should be taken
     # not to change these two bits.
-    dev_mac1="22$(echo ${mac} | cut -b 3-)"
-    host_mac1="32$(echo ${mac} | cut -b 3-)"
-    dev_mac2="02$(echo ${mac} | cut -b 3-)"
-    host_mac2="12$(echo ${mac} | cut -b 3-)"
+    dev_mac1="02$(echo ${mac} | cut -b 3-)"
+    host_mac1="12$(echo ${mac} | cut -b 3-)"
+    dev_mac2="22$(echo ${mac} | cut -b 3-)"
+    host_mac2="32$(echo ${mac} | cut -b 3-)"
     ms_vendor_code="0xcd" # Microsoft
     ms_qw_sign="MSFT100" # also Microsoft (if you couldn't tell)
     ms_compat_id="RNDIS" # matches Windows RNDIS Drivers
@@ -80,43 +80,24 @@ ev3_usb_up() {
     echo "${prod}" > ${g}/strings/0x409/product
     echo "${serial}" > ${g}/strings/0x409/serialnumber
 
-    # Create 2 configurations. The first will be RNDIS, which is required by
-    # Windows to be first. The second will be CDC. Linux and Mac are smart
-    # enough to ignore RNDIS and load the CDC configuration.
+    # Create 2 configurations. The first will be CDC. The second will be RNDIS.
+    # Thanks to os_desc, Windows should use the second configuration.
 
-    # There is a bug in OS X 10.11 that makes Mac no longer smart enough to
-    # use the second configuration. So we've added the cdc_only check to
-    # work around this.
+    # config 1 is for CDC
 
-    if [ -z $cdc_only ]; then
+    mkdir ${g}/configs/c.1
+    echo "${attr}" > ${g}/configs/c.1/bmAttributes
+    echo "${pwr}" > ${g}/configs/c.1/MaxPower
+    mkdir ${g}/configs/c.1/strings/0x409
+    echo "${cfg1}" > ${g}/configs/c.1/strings/0x409/configuration
 
-        # config 1 is for RNDIS
+    # Create the CDC function
 
-        mkdir ${g}/configs/c.1
-        echo "${attr}" > ${g}/configs/c.1/bmAttributes
-        echo "${pwr}" > ${g}/configs/c.1/MaxPower
-        mkdir ${g}/configs/c.1/strings/0x409
-        echo "${cfg1}" > ${g}/configs/c.1/strings/0x409/configuration
+    mkdir ${g}/functions/ecm.usb0
+    echo "${dev_mac1}" > ${g}/functions/ecm.usb0/dev_addr
+    echo "${host_mac1}" > ${g}/functions/ecm.usb0/host_addr
 
-        # On Windows 7 and later, the RNDIS 5.1 driver would be used by default,
-        # but it does not work very well. The RNDIS 6.0 driver works better. In
-        # order to get this driver to load automatically, we have to use a
-        # Microsoft-specific extension of USB.
-
-        echo "1" > ${g}/os_desc/use
-        echo "${ms_vendor_code}" > ${g}/os_desc/b_vendor_code
-        echo "${ms_qw_sign}" > ${g}/os_desc/qw_sign
-
-        # Create the RNDIS function, including the Microsoft-specific bits
-
-        mkdir ${g}/functions/rndis.usb0
-        echo "${dev_mac1}" > ${g}/functions/rndis.usb0/dev_addr
-        echo "${host_mac1}" > ${g}/functions/rndis.usb0/host_addr
-        echo "${ms_compat_id}" > ${g}/functions/rndis.usb0/os_desc/interface.rndis/compatible_id
-        echo "${ms_subcompat_id}" > ${g}/functions/rndis.usb0/os_desc/interface.rndis/sub_compatible_id
-    fi
-
-    # config 2 is for CDC
+    # config 2 is for RNDIS
 
     mkdir ${g}/configs/c.2
     echo "${attr}" > ${g}/configs/c.2/bmAttributes
@@ -124,19 +105,28 @@ ev3_usb_up() {
     mkdir ${g}/configs/c.2/strings/0x409
     echo "${cfg2}" > ${g}/configs/c.2/strings/0x409/configuration
 
-    # Create the CDC function
+    # On Windows 7 and later, the RNDIS 5.1 driver would be used by default,
+    # but it does not work very well. The RNDIS 6.0 driver works better. In
+    # order to get this driver to load automatically, we have to use a
+    # Microsoft-specific extension of USB.
 
-    mkdir ${g}/functions/ecm.usb0
-    echo "${dev_mac2}" > ${g}/functions/ecm.usb0/dev_addr
-    echo "${host_mac2}" > ${g}/functions/ecm.usb0/host_addr
+    echo "1" > ${g}/os_desc/use
+    echo "${ms_vendor_code}" > ${g}/os_desc/b_vendor_code
+    echo "${ms_qw_sign}" > ${g}/os_desc/qw_sign
+
+    # Create the RNDIS function, including the Microsoft-specific bits
+
+    mkdir ${g}/functions/rndis.usb0
+    echo "${dev_mac2}" > ${g}/functions/rndis.usb0/dev_addr
+    echo "${host_mac2}" > ${g}/functions/rndis.usb0/host_addr
+    echo "${ms_compat_id}" > ${g}/functions/rndis.usb0/os_desc/interface.rndis/compatible_id
+    echo "${ms_subcompat_id}" > ${g}/functions/rndis.usb0/os_desc/interface.rndis/sub_compatible_id
 
     # Link everything up and bind the USB device
 
-    if [ -z $cdc_only ]; then
-        ln -s ${g}/functions/rndis.usb0 ${g}/configs/c.1
-        ln -s ${g}/configs/c.1 ${g}/os_desc
-    fi
-    ln -s ${g}/functions/ecm.usb0 ${g}/configs/c.2
+    ln -s ${g}/functions/ecm.usb0 ${g}/configs/c.1
+    ln -s ${g}/functions/rndis.usb0 ${g}/configs/c.2
+    ln -s ${g}/configs/c.2 ${g}/os_desc
     echo "${device}" > ${g}/UDC
 
     echo "Done."
@@ -155,9 +145,9 @@ ev3_usb_down() {
     if [ "$(cat ${g}/UDC)" != "" ]; then
         echo "" > ${g}/UDC
     fi
-    rm -f ${g}/os_desc/c.1
-    rm -f ${g}/configs/c.2/ecm.usb0
-    rm -f ${g}/configs/c.1/rndis.usb0
+    rm -f ${g}/os_desc/c.2
+    rm -f ${g}/configs/c.2/rndis.usb0
+    rm -f ${g}/configs/c.1/ecm.usb0
     [ -d ${g}/functions/ecm.usb0 ] && rmdir ${g}/functions/ecm.usb0
     [ -d ${g}/functions/rndis.usb0 ] && rmdir ${g}/functions/rndis.usb0
     [ -d ${g}/configs/c.2/strings/0x409 ] && rmdir ${g}/configs/c.2/strings/0x409
