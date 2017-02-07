@@ -4,12 +4,15 @@
 Description=USB Gadget for LEGO MINDSTORMS EV3 hardware
 ConditionPathIsDirectory=/sys/kernel/config/usb_gadget
 Before=network.target
+BindsTo=sys-subsystem-udc-devices-%i.device
+# this is the old service name
+Conflicts=ev3-usb.service
 
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/usr/share/ev3-systemd/ev3-usb.sh up
-ExecStop=/usr/share/ev3-systemd/ev3-usb.sh down
+ExecStart=/usr/share/ev3-systemd/ev3-usb.sh up %i
+ExecStop=/usr/share/ev3-systemd/ev3-usb.sh down %i
 
 [Install]
 WantedBy=network.target

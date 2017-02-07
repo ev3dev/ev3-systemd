@@ -23,3 +23,8 @@ SUBSYSTEMS=="lego", ENV{DEVTYPE}=="ev3-uart-host", ACTION=="add", TAG+="systemd"
 
 # Give permission for uinput to input group
 KERNEL=="uinput", GROUP="input"
+
+# USB Gadget device
+SUBSYSTEM=="udc", ACTION=="add", TAG+="systemd", \
+    ENV{SYSTEMD_WANTS}="ev3-usb@$kernel.service", \
+    ENV{SYSTEMD_ALIAS}="/sys/subsystem/udc/devices/$kernel"

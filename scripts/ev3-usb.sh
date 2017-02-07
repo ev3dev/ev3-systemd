@@ -19,8 +19,11 @@
 
 set -e
 
-g=/sys/kernel/config/usb_gadget/ev3dev
-udc_device="musb-hdrc.1.auto"
+# command line parameters
+command="$1" # "up" or "down"
+udc_device="$2" # a udc device name, such as "musb-hdrc.1.auto"
+
+g="/sys/kernel/config/usb_gadget/ev3dev"
 
 ev3_usb_up() {
     usb_ver="0x0200" # USB 2.0
@@ -164,7 +167,7 @@ ev3_usb_down() {
     echo "Done."
 }
 
-case $@ in
+case ${command} in
 
 up)
     ev3_usb_up
@@ -173,7 +176,7 @@ down)
     ev3_usb_down
     ;;
 *)
-    echo "Usage: ev3-usb.sh up|down"
+    echo "Usage: ev3-usb.sh up|down <udc_device>"
     exit 1
     ;;
 esac
