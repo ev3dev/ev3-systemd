@@ -1,3 +1,10 @@
+ev3-systemd (5.3.1) testing; urgency=medium
+
+  * Don't modprobe in preinst script
+  * Stretch includes console-setup.service in the console-setup package
+
+ -- David Lechner <david@lechnology.com>  Fri, 24 Mar 2017 15:50:13 -0500
+
 ev3-systemd (5.3.0) stable; urgency=medium
 
   * Swap USB config order
