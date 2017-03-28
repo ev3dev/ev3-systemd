@@ -11,14 +11,15 @@ KERNEL=="i2c-5", SYMLINK+="i2c-in3"
 KERNEL=="i2c-6", SYMLINK+="i2c-in4"
 
 # Create symlink for serial ports to match EV3 input ports
-KERNEL=="ttyS1", SYMLINK+="tty_in1"
-KERNEL=="ttyS0", SYMLINK+="tty_in2"
-KERNEL=="ttySU1", SYMLINK+="tty_in3"
-KERNEL=="ttySU0", SYMLINK+="tty_in4"
+KERNEL=="ttyS1", SYMLINK+="tty_ev3-ports:in1"
+KERNEL=="ttyS0", SYMLINK+="tty_ev3-ports:in2"
+KERNEL=="ttySU1", SYMLINK+="tty_ev3-ports:in3"
+KERNEL=="ttySU0", SYMLINK+="tty_ev3-ports:in4"
 
 # Start EV3 UART sensor line discipline when UART sensor is connected
 SUBSYSTEMS=="lego", ENV{DEVTYPE}=="ev3-uart-host", ACTION=="add", TAG+="systemd", \
-    ENV{SYSTEMD_WANTS}="ev3-uart@$env{LEGO_ADDRESS}.service", \
+    PROGRAM="/bin/systemd-escape $env{LEGO_ADDRESS}" \
+    ENV{SYSTEMD_WANTS}="ev3-uart@$result.service", \
     ENV{SYSTEMD_ALIAS}="/sys/subsystem/lego/devices/ev3_uart_host_$env{LEGO_ADDRESS}"
 
 # Give permission for uinput to input group
