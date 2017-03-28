@@ -1,3 +1,11 @@
+ev3-systemd (5.3.2) testing; urgency=medium
+
+  * debian: update debhelper compat level
+  * futureproof release script
+  * Update udev rules for new EV3 port driver
+
+ -- David Lechner <david@lechnology.com>  Tue, 28 Mar 2017 16:14:31 -0500
+
 ev3-systemd (5.3.1) testing; urgency=medium
 
   * Don't modprobe in preinst script
