@@ -1,15 +1,14 @@
 Source: ev3-systemd
 Priority: optional
 Maintainer: David Lechner <david@lechnology.com>
-Build-Depends: debhelper (>= 8.0.0), dh-systemd (>= 1.5)
+Build-Depends: debhelper (>= 10.0.0), dh-systemd (>= 1.5)
 Standards-Version: 3.9.8
 Section: embedded
 Homepage: http://www.ev3dev.org
-Vcs-Git: git://github.com/ev3dev/ev3-systemd.git
+Vcs-Git: https://github.com/ev3dev/ev3-systemd.git
 Vcs-Browser: https://github.com/ev3dev/ev3-systemd
 
 Package: ev3-systemd
-Section: embedded
 Architecture: armel
 Depends: bluez (>= 5), kbd | console-tools, fonts-tom-thumb,
     ev3dev-rules, ${misc:Depends}
