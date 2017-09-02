@@ -1,3 +1,9 @@
+ev3-systemd (5.3.0jessie1) stable; urgency=medium
+
+  * Add delay before hciattach
+
+ -- David Lechner <david@lechnology.com>  Fri, 01 Sep 2017 21:07:23 -0500
+
 ev3-systemd (5.3.0) stable; urgency=medium
 
   * Swap USB config order
