@@ -10,5 +10,7 @@ Before=bluetooth.service connman.service systemd-rfkill@rfkill0.service
 Type=forking
 # This can fail due to timeout during boot because the system is so busy.
 # We give it a long timeout and use nice to try to keep if from failing.
+# Delaying hciattach for 10 seconds seems to help too.
+ExecStartPre=/bin/sleep 10
 ExecStart=/usr/bin/hciattach -t 30 /dev/ttyS2 texas 2000000 flow nosleep
 Nice=-10
