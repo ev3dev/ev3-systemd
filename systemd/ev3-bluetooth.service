@@ -5,6 +5,9 @@ Description=LEGO MINDSTORMS EV3 built-in Bluetooth
 BindsTo=sys-devices-platform-legoev3\x2dbluetooth.device
 # If any of these starts before hciattach is complete, hciattach could fail.
 Before=bluetooth.service connman.service systemd-rfkill@rfkill0.service
+# hciattach will fail if we don't wait for things to settle down
+Wants=systemd-udev-settle.service
+After=systemd-udev-settle.service
 
 [Service]
 Type=forking
