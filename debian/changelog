@@ -1,3 +1,9 @@
+ev3-systemd (5.4.1) testing; urgency=medium
+
+  * Fix USB MAC addresses
+
+ -- David Lechner <david@lechnology.com>  Sat, 09 Sep 2017 15:04:34 -0500
+
 ev3-systemd (5.4.0) testing; urgency=medium
 
   * Revert "Add delay before hciattach"
