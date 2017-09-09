@@ -30,13 +30,14 @@ ev3_usb_up() {
     dev_class="2" # Communications - LEGO firmware is 0
     vid="0x0694" # LEGO Group
     pid="0x0005" # EV3
-    device="0x3000" # this should be incremented any time there are breaking changes
+    device="0x3001" # this should be incremented any time there are breaking changes
                     # to this script so that the host OS sees it as a new device and
                     # re-enumerates everything rather than relying on cached values
     mfg="LEGO Group" # matches LEGO firmware
     prod="EV3+ev3dev" # LEGO firmware is just "EV3"
     # Read bluetooth mac address from eeprom - this is what LEGO firmware uses for serial
-    serial="$(grep Serial /proc/cpuinfo | sed 's/Serial\s*: 0000\(\w*\)/\1/')"
+    # FIXME: hard-coding the sysfs path could be fragile
+    serial="$(grep ^BOARD_INFO_SERIAL_NUM= /sys/class/board-info/board0/uevent | cut -d = -f 2)"
     attr="0xC0" # Self powered
     pwr="1" # 2mA
     cfg1="CDC"
