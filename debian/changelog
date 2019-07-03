@@ -1,4 +1,4 @@
-ev3-systemd (5.4.2) testing; urgency=medium
+ev3-systemd (5.4.2) stable; urgency=medium
 
   * Add delay before hciattach
 
