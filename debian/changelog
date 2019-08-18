@@ -1,3 +1,9 @@
+ev3-systemd (5.4.2+stretch1) stretch; urgency=medium
+
+  * udev: Set permissions so ev3dev group can control gpios
+
+ -- David Lechner <david@lechnology.com>  Sun, 18 Aug 2019 15:09:36 -0500
+
 ev3-systemd (5.4.2) stable; urgency=medium
 
   * Add delay before hciattach
