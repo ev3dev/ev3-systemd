@@ -29,3 +29,7 @@ KERNEL=="uinput", GROUP="input"
 SUBSYSTEM=="udc", ACTION=="add", TAG+="systemd", \
     ENV{SYSTEMD_WANTS}="ev3-usb@$kernel.service", \
     ENV{SYSTEMD_ALIAS}="/sys/subsystem/udc/devices/$kernel"
+
+# Set permissions so ev3dev group can control gpios
+SUBSYSTEM=="gpio", ACTION=="add", \
+    RUN+="/usr/bin/find /sys$devpath -type f -exec /bin/chmod g+u {} + -exec /bin/chown :ev3dev {} +"
