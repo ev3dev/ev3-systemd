@@ -1,3 +1,9 @@
+ev3-systemd (5.4.2+stretch2) stretch; urgency=medium
+
+  * Fix systemd-rfkill.service dependency
+
+ -- David Lechner <david@lechnology.com>  Sun, 22 Dec 2019 16:27:58 -0600
+
 ev3-systemd (5.4.2+stretch1) stretch; urgency=medium
 
   * udev: Set permissions so ev3dev group can control gpios
