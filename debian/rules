@@ -10,12 +10,15 @@
 #export DH_VERBOSE=1
 
 %:
-	dh $@ --with systemd
+	dh $@
 
 override_dh_installudev:
 	dh_installudev --name=ev3
 
-override_dh_systemd_start:
+override_dh_installsystemd:
 	# Restarting could cause us to lose network connection, which would kill
 	# the upgrade if it was running from a remote terminal.
-	dh_systemd_start --no-start --no-restart-on-upgrade
+	dh_installsystemd --no-restart-after-upgrade --no-restart-on-upgrade --no-start --name=ev3-usb@
+	dh_installsystemd --no-restart-after-upgrade --no-restart-on-upgrade --no-start --name=ev3-bluetooth
+	dh_installsystemd --name=ev3-uart@
+	dh_installsystemd --name=ev3-leds

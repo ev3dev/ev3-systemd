@@ -1,7 +1,7 @@
 Source: ev3-systemd
 Priority: optional
 Maintainer: David Lechner <david@lechnology.com>
-Build-Depends: debhelper (>= 10.0.0), dh-systemd (>= 1.5)
+Build-Depends: debhelper (>= 12~)
 Standards-Version: 4.3.0
 Section: embedded
 Homepage: http://www.ev3dev.org
