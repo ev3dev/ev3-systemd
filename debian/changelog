@@ -1,3 +1,12 @@
+ev3-systemd (5.5.0+buster1) buster; urgency=medium
+
+  * Now targetting ev3dev-buster
+  * Upgrade Debian policy to 4.5.0
+  * Upgrade debhelper to version 12
+  * ev3-uart: use systemd sysfs path instead of instance name
+
+ -- Jakub Vaněk <linuxtardis@gmail.com>  Mon, 17 Aug 2020 14:41:28 +0200
+
 ev3-systemd (5.4.2+stretch2) stretch; urgency=medium
 
   * Fix systemd-rfkill.service dependency
