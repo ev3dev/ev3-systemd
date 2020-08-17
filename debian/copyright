@@ -4,6 +4,10 @@ Files: *
 Copyright: 2014 David Lechner <david@lechnology.com>
 License: GPL-3.0+
 
+Files: scripts/ev3-start-uart.sh
+Copyright: 2020 Jakub Vanek <linuxtardis@gmail.com>
+License: GPL-3.0+
+
 License: GPL-3.0+
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by

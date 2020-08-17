@@ -2,11 +2,10 @@
 
 [Unit]
 Description=LEGO MINDSTORMS EV3 UART Sensors
-# This is the alias created by the ev3dev-uart udev rule.
-BindsTo=sys-subsystem-lego-devices-ev3_uart_host_%i.device
+BindsTo=%i.device
 Wants=systemd-udev-settle.service
 After=systemd-udev-settle.service
 
 [Service]
 Type=forking
-ExecStart=/usr/sbin/ldattach 29 /dev/tty_%I
+ExecStart=/usr/share/ev3-systemd/ev3-start-uart.sh %I
